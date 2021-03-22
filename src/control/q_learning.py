@@ -14,6 +14,12 @@ class QLearningControl(OffPolicyControl):
             delta = self.alpha * target
             self.update(current_state, current_action, delta)
 
+    def policy_update_after_step_with_gym(self, current_state, current_action, next_state, next_reward, discount_rate):
+        prediction = self.target_policy.value_for(current_state, current_action)
+        target = next_reward + discount_rate * (self.target_policy.optimal_value_for(next_state)) - prediction
+        delta = self.alpha * target
+        self.update(current_state, current_action, delta)
+
     def policy_update_after_episode(self, mdp):
         # Learning happens each step. Nothing to do at the end of the episode!
         return 

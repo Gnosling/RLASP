@@ -26,7 +26,7 @@ class MarkovDecisionProcedure:
         self.action_history: List[str] = [] #A0 will be given later once the first action is executed
         self.reward_history: List[float] = [None] # R0, which is undefined
 
-        self.available_actions = self._compute_available_actions()
+        self.available_actions = self._compute_available_actions
 
     @property
     def interface_file_path(self):
@@ -49,6 +49,9 @@ class MarkovDecisionProcedure:
 
         ctl.ground(parts=[('base', [])])
         models = ctl.solve(yield_=True)
+
+        # TODO: use ctl.solve(on_model=functionCall), whereby functionCall is a new
+        #       function triggered when a model is resolved
 
         # Since we are only modelling deterministic actions, there is only one possible next state (model).
         model = next(models)
@@ -98,6 +101,7 @@ class MarkovDecisionProcedure:
 
         return G
 
+    @property
     def _compute_available_actions(self) -> Set[str]:
 
         ctl = clingo.Control()
@@ -110,6 +114,9 @@ class MarkovDecisionProcedure:
 
         ctl.ground(parts=[('base', [])])
         models = ctl.solve(yield_=True)
+
+        # TODO: use ctl.solve(on_model=functionCall), whereby functionCall is a
+        #       new function triggered when a model is resolved
 
         # In search for next actions, we only expect one answer set.
         model = next(models)

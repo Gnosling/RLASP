@@ -64,7 +64,7 @@ class BlocksWorldBuilder():
         
         generated_state = set()
         placed = []
-        shuffled_blocks = random.sample(block_terms, len(self.block_terms))
+        shuffled_blocks = random.sample(self.block_terms, len(self.block_terms))
 
         for t, block in enumerate(shuffled_blocks):
 
