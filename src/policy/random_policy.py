@@ -1,7 +1,7 @@
 from typing import List, Dict, Set
 import random
 
-from mdp import MarkovDecisionProcedure
+from src.mdp import MarkovDecisionProcedure
 
 class RandomPolicy:
 

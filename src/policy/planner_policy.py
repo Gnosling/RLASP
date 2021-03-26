@@ -2,7 +2,7 @@ import os
 import clingo
 from typing import Tuple, Set
 
-from mdp import MarkovDecisionProcedure
+from src.mdp import MarkovDecisionProcedure
 
 class PlannerPolicy:
 

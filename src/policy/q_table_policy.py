@@ -2,7 +2,7 @@ from typing import Set, Dict, Any
 import random
 
 from . import RandomPolicy
-from mdp import MarkovDecisionProcedure
+from src.mdp import MarkovDecisionProcedure
 
 
 class QTablePolicy:
