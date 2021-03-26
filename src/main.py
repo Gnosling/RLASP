@@ -1,5 +1,6 @@
 import copy
 from mdp import BlocksWorldBuilder, VacuumCleanerWorldBuilder, SokobanBuilder
+from src.mdp.frozenlake import FrozenLakeBuilder
 from control import *
 from policy import *
 # import pandas as pd
@@ -77,7 +78,9 @@ if __name__ == '__main__':
 
     initial_value_estimate = -1
 
-    if args.mdp == 'frozenLake':
+    # TODO: noch löschen
+    # if args.mdp == 'frozenLake':
+    if False:
         if args.frozen_lake_version == '4x4':
             frozen_lake = FrozenLake4x4(0.5, args.learning_rate, args.episodes, 50, gym)
             frozen_lake.run_environment()
@@ -88,6 +91,8 @@ if __name__ == '__main__':
             mdp_builder = BlocksWorldBuilder(args.blocks_world_size)
         elif args.mdp == 'sokoban':
             mdp_builder = SokobanBuilder(args.sokoban_level_name)
+        elif args.mdp == 'frozenLake':
+            mdp_builder = FrozenLakeBuilder()
 
         if args.behavior_policy == 'planning_exploring_starts':
             behavior_policy = PlanningExploringStartsPolicy(PlannerPolicy(args.planning_horizon, mdp_builder),
