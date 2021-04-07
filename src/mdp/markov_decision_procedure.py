@@ -16,6 +16,7 @@ class MarkovDecisionProcedure:
         self.state: Set[str] = frozenset(state_initial)
         self.state_static: Set[str] = frozenset(state_static)
         self.discount_rate: float = discount_rate
+        self.env = False
 
         # TODO: Needs to be separated from abstract MDP. -> Do it when introducing a second MDP
         self.interface_file_name: str = 'markov_decision_procedure.lp'
@@ -122,4 +123,7 @@ class MarkovDecisionProcedure:
         ctl.solve(on_model=self.set_available_actions)
 
         return self.available_actions
+
+    def set_env(self, env):
+        self.env = env
 

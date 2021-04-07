@@ -140,10 +140,9 @@ class FrozenLakeEnv(discrete.DiscreteEnv):
             newstate = to_s(newrow, newcol)
             newletter = desc[newrow, newcol]
             done = bytes(newletter) in b'GH'
-            # TODO: so: reward = float(newletter == b'G')
-            reward = -1.0
+            reward = -1
             if (float(newletter == b'G')):
-                reward = 10.0
+                reward = 100
             elif (float(newletter == b'H')):
                     reward = -100.0
             return newstate, reward, done

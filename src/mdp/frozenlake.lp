@@ -44,6 +44,7 @@
 #const goal = 15.
 position(0..15).
 frozen(0..4). frozen(6). frozen(8..10). frozen(13..15).
+hole(5). hole(7). hole(11..12).
 leftEdge(0). leftEdge(4). leftEdge(8). leftEdge(12).
 rightEdge(3). rightEdge(7). rightEdge(11). rightEdge(15).
 upperEdge(0..3).
@@ -74,8 +75,10 @@ tic(currentPosition(L+length), T+1) :- act(move(down), T), tic(currentPosition(L
 %	OUTPUT: 	partialReward(R, T)
 
 goalState(T) :- tic(currentPosition(goal), T), time(T).
+failState(T) :- tic(currentPosition(L), T), hole(L), time(T).
 partialReward(100,T) :- goalState(T), not goalState(T-1).
 partialReward(-1,T)  :- act(_,T-1).
+partialReward(-100,T) :- failState(T), not failState(T-1).
 
 
 % Describe terminal states
@@ -83,3 +86,4 @@ partialReward(-1,T)  :- act(_,T-1).
 %	OUTPUT: 	terminal(T)
 
 terminal(T) :- goalState(T).
+terminal(T) :- failState(T).

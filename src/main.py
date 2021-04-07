@@ -87,12 +87,16 @@ if __name__ == '__main__':
 
     else:
 
+        gym_active = False
+        gym_env = ""
         if args.mdp == 'blocksworld':
             mdp_builder = BlocksWorldBuilder(args.blocks_world_size)
         elif args.mdp == 'sokoban':
             mdp_builder = SokobanBuilder(args.sokoban_level_name)
         elif args.mdp == 'frozenLake':
             mdp_builder = FrozenLakeBuilder()
+            gym_active = True
+            gym_env = 'FrozenLake-v0'
 
         if args.behavior_policy == 'planning_exploring_starts':
             behavior_policy = PlanningExploringStartsPolicy(PlannerPolicy(args.planning_horizon, mdp_builder),
@@ -139,13 +143,24 @@ if __name__ == '__main__':
             # print('Start state = ', mdp.state)
             # print(f'Estimated value for start state = {target_policy.optimal_value_for(mdp.state):4.2f}')
 
+
             # First, test the target policy and see how it would perform
             mdp_target = copy.deepcopy(mdp)
+
+            if gym_active:
+                env1 = gym.make(gym_env)
+                mdp.set_env(env1)
+                mdp.env.reset()
+                env2 = gym.make(gym_env)
+                mdp_target.set_env(env2)
+                mdp_target.env.reset()
+
+            # TODO: hier auch gym_active!
             control.generate_episode_with_target_policy(mdp_target, step_limit=args.max_episode_length)
 
             # Second, train the target policy and the behavior policy on the mdp
             # print('Updating states backwards...')
-            control.learn_episode(mdp, step_limit=args.max_episode_length)
+            control.learn_episode(mdp, gym_active, step_limit=args.max_episode_length)
 
             # Finally, store all results in the dataframe
             row = {

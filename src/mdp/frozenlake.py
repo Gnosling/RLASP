@@ -14,6 +14,23 @@ class FrozenLake(MarkovDecisionProcedure):
 
         super().__init__(state_initial, state_static, discount_rate, 'frozenlake.lp')
 
+    @staticmethod
+    def translate_action(action: str):
+        if action.count("left") == 1:
+            return 0
+        elif action.count("down") == 1:
+            return 1
+        elif action.count("right") == 1:
+            return 2
+        elif action.count("up") == 1:
+            return 3
+        else:
+            return -1
+
+    @staticmethod
+    def translate_current_state(state: int):
+        return frozenset({'currentPosition(' + str(state) + ')'})
+
 
 class FrozenLakeBuilder:
     def __init__(self):
@@ -25,4 +42,4 @@ class FrozenLakeBuilder:
 
     def build_mdp(self):
         # TODO: werte noch parametrisieren / aus level auslesen
-        return FrozenLake(state_initial={"currentPosition(0)"},state_static={"yolo(9)"})
+        return FrozenLake(state_initial={"currentPosition(0)"}, state_static={"yolo(9)"})
