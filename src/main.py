@@ -159,8 +159,7 @@ if __name__ == '__main__':
             mdp_target.set_env(env2)
             mdp_target.env.reset()
 
-        # TODO: hier auch gym_active!
-        control.generate_episode_with_target_policy(mdp_target, step_limit=args.max_episode_length)
+        control.generate_episode_with_target_policy(mdp_target, gym_active, step_limit=args.max_episode_length)
 
         # Second, train the target policy and the behavior policy on the mdp
         # print('Updating states backwards...')

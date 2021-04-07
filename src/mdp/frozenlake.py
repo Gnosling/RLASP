@@ -15,7 +15,7 @@ class FrozenLake(MarkovDecisionProcedure):
         super().__init__(state_initial, state_static, discount_rate, 'frozenlake.lp')
 
     @staticmethod
-    def translate_action(action: str):
+    def translate_action_to_env(action: str):
         if action.count("left") == 1:
             return 0
         elif action.count("down") == 1:
@@ -28,8 +28,35 @@ class FrozenLake(MarkovDecisionProcedure):
             return -1
 
     @staticmethod
-    def translate_current_state(state: int):
+    def translate_action_from_env(action: int):
+        if action == 0:
+            return 'move(left)'
+        elif action == 1:
+            return 'move(down)'
+        elif action == 2:
+            return 'move(right)'
+        elif action == 3:
+            return 'move(up)'
+        else:
+            return ""
+
+    @staticmethod
+    def translate_current_state_to_env(state: frozenset):
+        helper, = state
+        return helper[16:-1]
+
+    @staticmethod
+    def translate_current_state_from_env(state: int):
         return frozenset({'currentPosition(' + str(state) + ')'})
+
+    def transition_with_gym_env(self, action: str):
+        translated_action = self.translate_action_to_env(action)
+        next_state, next_reward, done, info = self.env.step(translated_action)
+        next_state = self.translate_current_state_from_env(next_state)
+
+        # due to side-effects, the normal transition will also be performed, however its return values are ignored
+        self.transition(action)
+        return next_state, next_reward
 
 
 class FrozenLakeBuilder:

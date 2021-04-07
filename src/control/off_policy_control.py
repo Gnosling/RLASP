@@ -31,7 +31,7 @@ class OffPolicyControl:
         if self.behavior_policy.is_new_state(state):
             self.behavior_policy.initialize_state(state, available_actions)
 
-    def learn_episode(self, mdp, gym=False, step_limit=None):
+    def learn_episode(self, mdp, gym_active=False, step_limit=None):
 
         self.try_initialize_state(mdp.state, mdp.available_actions)
 
@@ -45,12 +45,10 @@ class OffPolicyControl:
             current_state = mdp.state
             current_action = self.suggest_action_for_state(mdp.state)
 
-            if not gym:
+            if not gym_active:
                 next_state, next_reward = mdp.transition(current_action)
             else:
-                translated_action = mdp.translate_action(current_action)
-                next_state, next_reward, done, info = mdp.env.step(translated_action)
-                next_state = mdp.translate_current_state(next_state)
+                next_state, next_reward = mdp.transition_with_gym_env(current_action)
 
             self.try_initialize_state(next_state, mdp.available_actions)
             self.policy_update_after_step(current_state, current_action,
@@ -59,7 +57,7 @@ class OffPolicyControl:
 
         self.policy_update_after_episode(mdp)
 
-    def generate_episode_with_target_policy(self, mdp, step_limit=None):
+    def generate_episode_with_target_policy(self, mdp, gym_active=False, step_limit=None):
 
         self.try_initialize_state(mdp.state, mdp.available_actions)
 
@@ -70,5 +68,8 @@ class OffPolicyControl:
                 if step_limit < 0:
                     break
 
-            mdp.transition(self.target_policy.suggest_action_for_state(mdp.state))
+            if not gym_active:
+                mdp.transition(self.target_policy.suggest_action_for_state(mdp.state))
+            else:
+                mdp.transition_with_gym_env(self.target_policy.suggest_action_for_state(mdp.state))
             self.try_initialize_state(mdp.state, mdp.available_actions)
