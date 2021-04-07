@@ -64,7 +64,7 @@ def create_seed(a=None, max_bytes=8):
 
     return a
 
-# TODO: don't hardcode sizeof_int here
+# don't hardcode sizeof_int here
 def _bigint_from_bytes(bytes):
     sizeof_int = 4
     padding = sizeof_int - len(bytes) % sizeof_int

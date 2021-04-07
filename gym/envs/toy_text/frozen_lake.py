@@ -12,6 +12,7 @@ DOWN = 1
 RIGHT = 2
 UP = 3
 
+# TODO: MAPS should be dynamically extended!
 MAPS = {
     "4x4": [
         "SFFF",
@@ -19,13 +20,6 @@ MAPS = {
         "FFFH",
         "HFFG"
     ],
-    # TODO: mi
-    #"4x4": [
-    #    "SFFF",
-    #    "FFFF",
-    #    "FFFF",
-    #    "FFFG"
-    #],
     "8x8": [
         "SFFFFFFF",
         "FFFFFFFF",

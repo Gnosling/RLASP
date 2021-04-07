@@ -196,7 +196,7 @@ class Monitor(Wrapper):
 
         # Start recording the next video.
         #
-        # TODO: calculate a more correct 'episode_id' upon merge
+        # calculate a more correct 'episode_id' upon merge
         self.video_recorder = video_recorder.VideoRecorder(
             env=self.env,
             base_path=os.path.join(self.directory, '{}.video.{}.video{:06}'.format(self.file_prefix, self.file_infix, self.episode_id)),
@@ -358,7 +358,7 @@ def merge_stats_files(stats_files):
 
     return data_sources, initial_reset_timestamps, timestamps, episode_lengths, episode_rewards, episode_types, initial_reset_timestamp
 
-# TODO training_dir isn't used except for error messages, clean up the layering
+# training_dir isn't used except for error messages, clean up the layering
 def collapse_env_infos(env_infos, training_dir):
     assert len(env_infos) > 0
 

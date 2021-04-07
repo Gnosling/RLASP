@@ -17,7 +17,7 @@ if sys.version_info >= (3, 3):
     from os import replace
 elif sys.platform.startswith("win"):
     def replace(src, dst):
-        # TODO: on Windows, this will raise if the file is in use,
+        # on Windows, this will raise if the file is in use,
         # which is possible. We'll need to make this more robust over
         # time.
         try:

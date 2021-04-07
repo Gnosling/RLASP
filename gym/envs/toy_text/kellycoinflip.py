@@ -116,7 +116,7 @@ class KellyCoinflipGeneralizedEnv(gym.Env):
         # store the hyper-parameters for passing back into __init__() during resets so
         # the same hyper-parameters govern the next game's parameters, as the user
         # expects:
-        # TODO: this is boilerplate, is there any more elegant way to do this?
+        # this is boilerplate, is there any more elegant way to do this?
         self.initial_wealth = float(initial_wealth)
         self.edge_prior_alpha = edge_prior_alpha
         self.edge_prior_beta = edge_prior_beta
