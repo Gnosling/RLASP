@@ -4,6 +4,7 @@ import random
 from typing import Set, List
 
 from .markov_decision_procedure import MarkovDecisionProcedure
+from .frozen_lake_levels.frozen_lake_level_builder import FrozenLakeLevelBuilder
 
 
 class FrozenLake(MarkovDecisionProcedure):
@@ -60,7 +61,8 @@ class FrozenLake(MarkovDecisionProcedure):
 
 
 class FrozenLakeBuilder:
-    def __init__(self):
+    def __init__(self, level: str):
+        self.level = FrozenLakeLevelBuilder.build_level(level)
         sample_mdp = self.build_mdp()
 
         self.mdp_interface_file_path = sample_mdp.interface_file_path
@@ -69,4 +71,4 @@ class FrozenLakeBuilder:
 
     def build_mdp(self):
         # TODO: werte noch parametrisieren / aus level auslesen
-        return FrozenLake(state_initial={"currentPosition(0)"}, state_static={"yolo(9)"})
+        return FrozenLake(state_initial=self.level.start, state_static=self.level.states)

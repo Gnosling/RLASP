@@ -28,7 +28,7 @@
 %	move(L)		...	the agent moves to location `L`
 
 %	STATIC STATE (ATOMS):
-%   TODO: parametrisieren
+%   TODO: add width
 %   #const length ... the horizontal length of the lake
 %   #const goal ... the goal state to be reached, must be >0
 
@@ -38,18 +38,6 @@
 % 	INPUT:		tic(S(...), T)
 % 	INPUT:		terminal(T)
 % 	OUTPUT: 	executable(A(...), T)
-
-% TODO: dynamisch:
-#const length = 4.
-#const goal = 15.
-position(0..15).
-frozen(0..4). frozen(6). frozen(8..10). frozen(13..15).
-hole(5). hole(7). hole(11..12).
-leftEdge(0). leftEdge(4). leftEdge(8). leftEdge(12).
-rightEdge(3). rightEdge(7). rightEdge(11). rightEdge(15).
-upperEdge(0..3).
-lowerEdge(12..15).
-
 
 executable(move(left), T) :- tic(currentPosition(L), T), frozen(L-1), not leftEdge(L), not terminal(T).
 executable(move(right), T) :- tic(currentPosition(L), T), frozen(L+1), not rightEdge(L), not terminal(T).

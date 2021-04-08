@@ -70,7 +70,7 @@ if __name__ == '__main__':
 
     parser_frozenLake = subparsers.add_parser('frozen_lake', help='OpenAi gym\'s frozenLake-environment.')
     # TODO: currently only 4x4 is working
-    parser_frozenLake.add_argument('--frozen_lake_version', help='4x4, 8x8, 4x4s (slippery), 8x8s (slippery)',
+    parser_frozenLake.add_argument('--frozen_lake_level', help='4x4, 8x8, 4x4s (slippery), 8x8s (slippery)',
                                    default='4x4',
                                    choices={'4x4, 8x8, 4x4s, 8x8s'})
     parser_frozenLake.add_argument('--gym_environment_active', help='True or False',
@@ -96,7 +96,7 @@ if __name__ == '__main__':
     elif args.mdp == 'sokoban':
         mdp_builder = SokobanBuilder(args.sokoban_level_name)
     elif args.mdp == 'frozenLake':
-        mdp_builder = FrozenLakeBuilder()
+        mdp_builder = FrozenLakeBuilder(args.frozen_lake_level)
         if args.gym_environment_active == 'True':
             gym_active = True
         else:
