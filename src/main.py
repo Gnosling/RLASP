@@ -152,6 +152,7 @@ if __name__ == '__main__':
         mdp_target = copy.deepcopy(mdp)
 
         if gym_active:
+            # TODO: integrate correct level!
             env1 = gym.make(gym_env)
             mdp.set_env(env1)
             mdp.env.reset()

@@ -1,13 +1,19 @@
-#       ___________
-#      |S  F  F  F |
-#      |F  H  F  H |
-#      |F  F  F  H |
-#      |H  F  F  G |
-#      |___________|
-
 from .frozen_lake_level import FrozenLakeLevel
 
-
+"""
+Fixed 4x4-level for a frozen-lake:
+      _____________
+      |S  F  F  F |
+      |F  H  F  H |
+      |F  F  F  H |
+      |H  F  F  G |
+      |___________|
+Whereby: 
+    S = START
+    F = FROZEN
+    H = HOLE
+    G = GOAL
+"""
 class FrozenLakeLevel4x4(FrozenLakeLevel):
 
     def __init__(self):

@@ -70,5 +70,4 @@ class FrozenLakeBuilder:
         self.mdp_state_static = sample_mdp.state_static
 
     def build_mdp(self):
-        # TODO: werte noch parametrisieren / aus level auslesen
         return FrozenLake(state_initial=self.level.start, state_static=self.level.states)
