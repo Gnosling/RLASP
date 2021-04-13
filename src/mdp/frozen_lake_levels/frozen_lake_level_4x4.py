@@ -13,6 +13,7 @@ Whereby:
     F = FROZEN
     H = HOLE
     G = GOAL
+    (S and G must be frozen)
 """
 class FrozenLakeLevel4x4(FrozenLakeLevel):
 

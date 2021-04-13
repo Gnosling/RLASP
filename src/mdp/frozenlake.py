@@ -56,6 +56,7 @@ class FrozenLake(MarkovDecisionProcedure):
         next_state = self.translate_current_state_from_env(next_state)
 
         # due to side-effects, the normal transition will also be performed, however its return values are ignored
+        # TODO: Needs to be checked with slippery environment! (e.g. wrong state/reward in history)
         self.transition(action)
         return next_state, next_reward
 

@@ -72,7 +72,7 @@ if __name__ == '__main__':
     # TODO: currently only 4x4 is working
     parser_frozenLake.add_argument('--frozen_lake_level', help='4x4, 8x8, 4x4s (slippery), 8x8s (slippery)',
                                    default='4x4',
-                                   choices={'4x4, 8x8, 4x4s, 8x8s'})
+                                   choices={'4x4', '8x8', '4x4s', '8x8s'})
     parser_frozenLake.add_argument('--gym_environment_active', help='True or False',
                                    default='True',
                                    choices={'True', 'False'})
@@ -90,6 +90,8 @@ if __name__ == '__main__':
     # else:
 
     gym_active = False
+    frozen_lake_active = False
+    frozen_lake_level = ""
     gym_env = ""
     if args.mdp == 'blocksworld':
         mdp_builder = BlocksWorldBuilder(args.blocks_world_size)
@@ -97,11 +99,13 @@ if __name__ == '__main__':
         mdp_builder = SokobanBuilder(args.sokoban_level_name)
     elif args.mdp == 'frozenLake':
         mdp_builder = FrozenLakeBuilder(args.frozen_lake_level)
+        frozen_lake_active = True
         if args.gym_environment_active == 'True':
             gym_active = True
         else:
             gym_active = False
         gym_env = 'FrozenLake-v0'
+        frozen_lake_level = args.frozen_lake_level
 
     if args.behavior_policy == 'planning_exploring_starts':
         behavior_policy = PlanningExploringStartsPolicy(PlannerPolicy(args.planning_horizon, mdp_builder),
@@ -151,13 +155,15 @@ if __name__ == '__main__':
         # First, test the target policy and see how it would perform
         mdp_target = copy.deepcopy(mdp)
 
-        if gym_active:
-            # TODO: integrate correct level!
+        if gym_active & frozen_lake_active:
+            # TODO: integrate correct level (how random generation?)!
             env1 = gym.make(gym_env)
             mdp.set_env(env1)
+            mdp.env.set_level(frozen_lake_level, False, False)
             mdp.env.reset()
             env2 = gym.make(gym_env)
             mdp_target.set_env(env2)
+            mdp_target.env.set_level(frozen_lake_level, False, False)
             mdp_target.env.reset()
 
         control.generate_episode_with_target_policy(mdp_target, gym_active, step_limit=args.max_episode_length)

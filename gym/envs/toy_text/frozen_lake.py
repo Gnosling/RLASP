@@ -103,6 +103,10 @@ class FrozenLakeEnv(discrete.DiscreteEnv):
             desc = generate_random_map()
         elif desc is None:
             desc = MAPS[map_name]
+        nS, nA, P, isd = self.initialize(desc, is_slippery)
+        super(FrozenLakeEnv, self).__init__(nS, nA, P, isd)
+
+    def initialize(self, desc, is_slippery):
         self.desc = desc = np.asarray(desc, dtype='c')
         self.nrow, self.ncol = nrow, ncol = desc.shape
         self.reward_range = (0, 1)
@@ -116,7 +120,7 @@ class FrozenLakeEnv(discrete.DiscreteEnv):
         P = {s: {a: [] for a in range(nA)} for s in range(nS)}
 
         def to_s(row, col):
-            return row*ncol + col
+            return row * ncol + col
 
         def inc(row, col, a):
             if a == LEFT:
@@ -138,7 +142,7 @@ class FrozenLakeEnv(discrete.DiscreteEnv):
             if (float(newletter == b'G')):
                 reward = 100
             elif (float(newletter == b'H')):
-                    reward = -100.0
+                reward = -100.0
             return newstate, reward, done
 
         for row in range(nrow):
@@ -160,8 +164,7 @@ class FrozenLakeEnv(discrete.DiscreteEnv):
                             li.append((
                                 1., *update_probability_matrix(row, col, a)
                             ))
-
-        super(FrozenLakeEnv, self).__init__(nS, nA, P, isd)
+        return nS, nA, P, isd
 
     def render(self, mode='human'):
         outfile = StringIO() if mode == 'ansi' else sys.stdout
@@ -180,3 +183,14 @@ class FrozenLakeEnv(discrete.DiscreteEnv):
         if mode != 'human':
             with closing(outfile):
                 return outfile.getvalue()
+
+    def set_level(self, level_name, is_slippery, is_random):
+        if level_name == "4x4":
+            if not is_random:
+                t = 0
+                # nothing
+        elif level_name == "8x8":
+            if not is_random:
+                desc = MAPS[level_name]
+                nS, nA, P, isd = self.initialize(desc, is_slippery)
+                super(FrozenLakeEnv, self).__init__(nS, nA, P, isd)

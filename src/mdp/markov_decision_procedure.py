@@ -127,3 +127,6 @@ class MarkovDecisionProcedure:
     def set_env(self, env):
         self.env = env
 
+    def set_env_level(self, level_name, is_slippery=False, is_random=False):
+        self.env.set_level(level_name, is_slippery, is_random)
+
