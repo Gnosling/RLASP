@@ -124,6 +124,21 @@ class MarkovDecisionProcedure:
 
         return self.available_actions
 
+    def update_available_actions(self):
+        ctl = clingo.Control()
+
+        ctl.load(self.file_path(self.interface_file_name))
+        ctl.load(self.file_path(self.problem_file_name))
+        ctl.add('base', [], ' '.join(f'currentState({s}).' for s in self.state))
+        ctl.add('base', [], ' '.join(f'{s}.' for s in self.state_static))
+        ctl.add('base', [], '#show currentExecutable/1.')
+
+        ctl.ground(parts=[('base', [])])
+        ctl.solve(on_model=self.set_available_actions)
+
+        return self.available_actions
+
+
     def set_env(self, env):
         self.env = env
 

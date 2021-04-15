@@ -142,7 +142,7 @@ class FrozenLakeEnv(discrete.DiscreteEnv):
             if (float(newletter == b'G')):
                 reward = 100
             elif (float(newletter == b'H')):
-                reward = -100.0
+                reward = -100
             return newstate, reward, done
 
         for row in range(nrow):
@@ -184,13 +184,7 @@ class FrozenLakeEnv(discrete.DiscreteEnv):
             with closing(outfile):
                 return outfile.getvalue()
 
-    def set_level(self, level_name, is_slippery, is_random):
-        if level_name == "4x4":
-            if not is_random:
-                t = 0
-                # nothing
-        elif level_name == "8x8":
-            if not is_random:
-                desc = MAPS[level_name]
-                nS, nA, P, isd = self.initialize(desc, is_slippery)
-                super(FrozenLakeEnv, self).__init__(nS, nA, P, isd)
+    def set_level(self, level_name, is_slippery):
+        desc = MAPS[level_name]
+        nS, nA, P, isd = self.initialize(desc, is_slippery)
+        super(FrozenLakeEnv, self).__init__(nS, nA, P, isd)

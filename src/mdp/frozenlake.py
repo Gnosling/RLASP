@@ -12,6 +12,7 @@ class FrozenLake(MarkovDecisionProcedure):
         # No discounting in any blocks world
         # TODO: Discount ändern? --> denke nicht
         discount_rate = 1.0
+        self.all_actions = {"move(up)", "move(right)", "move(left)", "move(down)"}
 
         super().__init__(state_initial, state_static, discount_rate, 'frozenlake.lp')
 
@@ -55,9 +56,13 @@ class FrozenLake(MarkovDecisionProcedure):
         next_state, next_reward, done, info = self.env.step(translated_action)
         next_state = self.translate_current_state_from_env(next_state)
 
-        # due to side-effects, the normal transition will also be performed, however its return values are ignored
-        # TODO: Needs to be checked with slippery environment! (e.g. wrong state/reward in history)
-        self.transition(action)
+        self.action_history.append(action)
+        self.update_available_actions()
+        self.reward_history.append(next_reward)
+        self.state_history.append(next_state)
+        self.state = next_state
+        self.action = action
+        self.available_actions = super().update_available_actions()
         return next_state, next_reward
 
 

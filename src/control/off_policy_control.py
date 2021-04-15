@@ -33,7 +33,10 @@ class OffPolicyControl:
 
     def learn_episode(self, mdp, gym_active=False, step_limit=None):
 
-        self.try_initialize_state(mdp.state, mdp.available_actions)
+        if not gym_active:
+            self.try_initialize_state(mdp.state, mdp.available_actions)
+        else:
+            self.try_initialize_state(mdp.state, mdp.all_actions)
 
         while len(mdp.available_actions) > 0:
 
@@ -52,7 +55,11 @@ class OffPolicyControl:
 
             # mdp.env.render()
 
-            self.try_initialize_state(next_state, mdp.available_actions)
+            if not gym_active:
+                self.try_initialize_state(mdp.state, mdp.available_actions)
+            else:
+                self.try_initialize_state(mdp.state, mdp.all_actions)
+
             self.policy_update_after_step(current_state, current_action,
                                           next_state, next_reward,
                                           mdp)
@@ -61,7 +68,10 @@ class OffPolicyControl:
 
     def generate_episode_with_target_policy(self, mdp, gym_active=False, step_limit=None):
 
-        self.try_initialize_state(mdp.state, mdp.available_actions)
+        if not gym_active:
+            self.try_initialize_state(mdp.state, mdp.available_actions)
+        else:
+            self.try_initialize_state(mdp.state, mdp.all_actions)
 
         while len(mdp.available_actions) > 0:
 
@@ -74,4 +84,8 @@ class OffPolicyControl:
                 mdp.transition(self.target_policy.suggest_action_for_state(mdp.state))
             else:
                 mdp.transition_with_gym_env(self.target_policy.suggest_action_for_state(mdp.state))
-            self.try_initialize_state(mdp.state, mdp.available_actions)
+
+            if not gym_active:
+                self.try_initialize_state(mdp.state, mdp.available_actions)
+            else:
+                self.try_initialize_state(mdp.state, mdp.all_actions)

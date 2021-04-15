@@ -69,10 +69,12 @@ if __name__ == '__main__':
     parser_sokoban.set_defaults(mdp='sokoban', behavior_policy='planning_epsilon_greedy')
 
     parser_frozenLake = subparsers.add_parser('frozen_lake', help='OpenAi gym\'s frozenLake-environment.')
-    # TODO: currently only 4x4 is working
-    parser_frozenLake.add_argument('--frozen_lake_level', help='4x4, 8x8, 4x4s (slippery), 8x8s (slippery)',
+    parser_frozenLake.add_argument('--frozen_lake_level', help='4x4 or 8x8',
                                    default='4x4',
-                                   choices={'4x4', '8x8', '4x4s', '8x8s'})
+                                   choices={'4x4', '8x8'})
+    parser_frozenLake.add_argument('--is_slippery', help='defines whether the agent may slip',
+                                   default='True',
+                                   choices={'True', 'False'})
     parser_frozenLake.add_argument('--gym_environment_active', help='True or False',
                                    default='True',
                                    choices={'True', 'False'})
@@ -90,6 +92,7 @@ if __name__ == '__main__':
     # else:
 
     gym_active = False
+    is_slippery = False
     frozen_lake_active = False
     frozen_lake_level = ""
     gym_env = ""
@@ -104,6 +107,10 @@ if __name__ == '__main__':
             gym_active = True
         else:
             gym_active = False
+        if args.is_slippery == 'True':
+            is_slippery = True
+        else:
+            is_slippery = False
         gym_env = 'FrozenLake-v0'
         frozen_lake_level = args.frozen_lake_level
 
@@ -146,7 +153,11 @@ if __name__ == '__main__':
             print(f'\x1b[2K\rTraining:{episode_id * 100 / (args.episodes - 1):3.0f}%', end='')
 
         mdp = mdp_builder.build_mdp()
-        control.try_initialize_state(mdp.state, mdp.available_actions)
+        if not gym_active:
+            control.try_initialize_state(mdp.state, mdp.available_actions)
+        else:
+            # work around for frozen lake
+            control.try_initialize_state(mdp.state, mdp.all_actions)
         # print()
         # print(f'Beginning episode {episode_id}')
         # print('Start state = ', mdp.state)
@@ -156,14 +167,13 @@ if __name__ == '__main__':
         mdp_target = copy.deepcopy(mdp)
 
         if gym_active & frozen_lake_active:
-            # TODO: integrate correct level (how random generation?)!
             env1 = gym.make(gym_env)
             mdp.set_env(env1)
-            mdp.env.set_level(frozen_lake_level, False, False)
+            mdp.env.set_level(frozen_lake_level, is_slippery)
             mdp.env.reset()
             env2 = gym.make(gym_env)
             mdp_target.set_env(env2)
-            mdp_target.env.set_level(frozen_lake_level, False, False)
+            mdp_target.env.set_level(frozen_lake_level, is_slippery)
             mdp_target.env.reset()
 
         control.generate_episode_with_target_policy(mdp_target, gym_active, step_limit=args.max_episode_length)
@@ -189,7 +199,7 @@ if __name__ == '__main__':
 
     print()
 
-    if args.db_file:
+    if True:
         # df.to_csv(args.db_file)
         csv_headers = set()
         for row in df:
