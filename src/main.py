@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--episodes', help='The number of episodes to train for.', type=int, default=100)
     parser.add_argument('--max_episode_length', help='The maximum number of steps within an episode.', type=int,
-                        default=10)
+                        default=100)
 
     # Behavior policies
     parser.add_argument('--epsilon',

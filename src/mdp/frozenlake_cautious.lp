@@ -71,7 +71,7 @@ nearHole(L) :- position(L), hole(L+1).
 nearHole(L) :- position(L), hole(L+length).
 nearHole(L) :- position(L), hole(L-1).
 nearHole(L) :- position(L), hole(L-length).
-partialReward(-10, T) :- tic(currentPosition(L), T), nearHole(L), time(T).
+partialReward(-15, T) :- tic(currentPosition(L), T), nearHole(L), time(T).
 
 
 

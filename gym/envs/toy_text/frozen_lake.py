@@ -116,7 +116,6 @@ class FrozenLakeEnv(discrete.DiscreteEnv):
 
     metadata = {'render.modes': ['human', 'ansi']}
 
-    # TODO: slippery=True
     def __init__(self, desc=None, map_name="4x4", is_slippery=False):
         if desc is None and map_name is None:
             desc = generate_random_map()
@@ -157,11 +156,15 @@ class FrozenLakeEnv(discrete.DiscreteEnv):
             newstate = to_s(newrow, newcol)
             newletter = desc[newrow, newcol]
             done = bytes(newletter) in b'GH'
-            reward = -1
-            if (float(newletter == b'G')):
-                reward = 100
-            elif (float(newletter == b'H')):
-                reward = -100
+
+            reward = float(newletter == b'G')
+            # the following lines correspond to the rewards in frozenlake.lp:
+            # reward = -1
+            # if (float(newletter == b'G')):
+            #     reward = 100
+            # elif (float(newletter == b'H')):
+            #     reward = -100
+
             return newstate, reward, done
 
         for row in range(nrow):
