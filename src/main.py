@@ -69,9 +69,9 @@ if __name__ == '__main__':
     parser_sokoban.set_defaults(mdp='sokoban', behavior_policy='planning_epsilon_greedy')
 
     parser_frozenLake = subparsers.add_parser('frozen_lake', help='OpenAi gym\'s frozenLake-environment.')
-    parser_frozenLake.add_argument('--frozen_lake_level', help='4x4 or 8x8',
-                                   default='4x4',
-                                   choices={'4x4', '8x8'})
+    parser_frozenLake.add_argument('--frozen_lake_level', help='4x4_A, 4x4_B or 8x8',
+                                   default='4x4_A',
+                                   choices={'4x4_A','4x4_B', '5x5_A', '8x8'})
     parser_frozenLake.add_argument('--is_slippery', help='defines whether the agent may slip',
                                    default='True',
                                    choices={'True', 'False'})
