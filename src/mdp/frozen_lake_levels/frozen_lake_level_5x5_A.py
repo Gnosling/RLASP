@@ -25,10 +25,10 @@ class FrozenLakeLevel5x5_A(FrozenLakeLevel):
                   "frozen(5..9)",
                   "frozen(10..11)", "hole(12)", "frozen(13..14)",
                   "frozen(15..19)",
-                  "frozen(20..24)"
+                  "frozen(20..24)",
                   "#const goal = 4", "#const length = 5",
-                  "leftEdge(0)", "leftEdge(5)", "leftEdge(10)", "leftEdge(15)", "leftEdge(20)"
-                  "rightEdge(4)", "rightEdge(9)", "rightEdge(14)", "rightEdge(19)", "rigthEdge(24)"
+                  "leftEdge(0)", "leftEdge(5)", "leftEdge(10)", "leftEdge(15)", "leftEdge(20)",
+                  "rightEdge(4)", "rightEdge(9)", "rightEdge(14)", "rightEdge(19)", "rightEdge(24)",
                   "upperEdge(0..4)", "lowerEdge(20..24)"
                   }
         start = {"currentPosition(0)"}

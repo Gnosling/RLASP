@@ -20,6 +20,25 @@ MAPS = {
         "FFFH",
         "HFFG"
     ],
+    "4x4_A": [
+        "SFFF",
+        "FHFH",
+        "FFFH",
+        "HFFG"
+    ],
+    "4x4_B": [
+        "SFFF",
+        "HFFF",
+        "HHFF",
+        "HHHG"
+    ],
+    "5x5_A": [
+        "SFHFG",
+        "FFFFF",
+        "FFHFF",
+        "FFFFF",
+        "FFFFF"
+    ],
     "8x8": [
         "SFFFFFFF",
         "FFFFFFFF",
