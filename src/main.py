@@ -98,6 +98,7 @@ if __name__ == '__main__':
         frozen_lake_active = True
         if args.gym_environment_active == 'True':
             gym_active = True
+            initial_value_estimate = 0
         else:
             gym_active = False
         if args.is_slippery == 'True':
