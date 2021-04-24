@@ -16,9 +16,6 @@ sys.path.insert(0, parentdir)
 import csv
 import gym
 
-from src.mdp.frozenLakes.frozenLake import FrozenLake
-from src.mdp.frozenLakes.frozenLake4x4 import FrozenLake4x4
-
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Train a RLASP agent in a given MDP.')
@@ -75,6 +72,9 @@ if __name__ == '__main__':
     parser_frozenLake.add_argument('--is_slippery', help='defines whether the agent may slip',
                                    default='True',
                                    choices={'True', 'False'})
+    parser_frozenLake.add_argument('--is_cautious', help='defines whether the agent tries to keep distance to holes or not',
+                                   default='False',
+                                   choices={'True', 'False'})
     parser_frozenLake.add_argument('--gym_environment_active', help='True or False',
                                    default='True',
                                    choices={'True', 'False'})
@@ -83,13 +83,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     initial_value_estimate = -1
-
-    # if args.mdp == 'frozenLake':
-    # if False:
-    # if args.frozen_lake_version == '4x4':
-    # frozen_lake = FrozenLake4x4(0.5, args.learning_rate, args.episodes, 50, gym)
-    # frozen_lake.run_environment()
-    # else:
 
     gym_active = False
     is_slippery = False
@@ -101,7 +94,7 @@ if __name__ == '__main__':
     elif args.mdp == 'sokoban':
         mdp_builder = SokobanBuilder(args.sokoban_level_name)
     elif args.mdp == 'frozenLake':
-        mdp_builder = FrozenLakeBuilder(args.frozen_lake_level)
+        mdp_builder = FrozenLakeBuilder(args.frozen_lake_level, args.is_cautious == 'True')
         frozen_lake_active = True
         if args.gym_environment_active == 'True':
             gym_active = True

@@ -66,6 +66,14 @@ partialReward(100,T) :- goalState(T), not goalState(T-1).
 partialReward(-1,T)  :- act(_,T-1).
 partialReward(-100,T) :- failState(T), not failState(T-1).
 
+% TODO: computing absolute distance to nearest hole, instead of this?
+nearHole(L) :- position(L), hole(L+1).
+nearHole(L) :- position(L), hole(L+length).
+nearHole(L) :- position(L), hole(L-1).
+nearHole(L) :- position(L), hole(L-length).
+partialReward(-10, T) :- tic(currentPosition(L), T), nearHole(L), time(T).
+
+
 
 % Describe terminal states
 %	INPUT: 		tic(S(...), T)

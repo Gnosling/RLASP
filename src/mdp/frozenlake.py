@@ -8,13 +8,17 @@ from .frozen_lake_levels.frozen_lake_level_builder import FrozenLakeLevelBuilder
 
 
 class FrozenLake(MarkovDecisionProcedure):
-    def __init__(self, state_initial: Set[str], state_static: Set[str]):
+    def __init__(self, state_initial: Set[str], state_static: Set[str], is_cautious: bool):
         # No discounting in any blocks world
         # TODO: Discount ändern? --> denke nicht
         discount_rate = 1.0
         self.all_actions = {"move(up)", "move(right)", "move(left)", "move(down)"}
+        if is_cautious:
+            planer = 'frozenlake_cautious.lp'
+        else:
+            planer = 'frozenlake.lp'
 
-        super().__init__(state_initial, state_static, discount_rate, 'frozenlake.lp')
+        super().__init__(state_initial, state_static, discount_rate, planer)
 
     @staticmethod
     def translate_action_to_env(action: str):
@@ -67,8 +71,9 @@ class FrozenLake(MarkovDecisionProcedure):
 
 
 class FrozenLakeBuilder:
-    def __init__(self, level: str):
+    def __init__(self, level: str, is_cautious = False):
         self.level = FrozenLakeLevelBuilder.build_level(level)
+        self.is_cautious = is_cautious
         sample_mdp = self.build_mdp()
 
         self.mdp_interface_file_path = sample_mdp.interface_file_path
@@ -76,4 +81,4 @@ class FrozenLakeBuilder:
         self.mdp_state_static = sample_mdp.state_static
 
     def build_mdp(self):
-        return FrozenLake(state_initial=self.level.start, state_static=self.level.states)
+        return FrozenLake(state_initial=self.level.start, state_static=self.level.states, is_cautious=self.is_cautious)
