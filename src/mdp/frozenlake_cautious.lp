@@ -67,10 +67,24 @@ partialReward(-1,T)  :- act(_,T-1).
 partialReward(-100,T) :- failState(T), not failState(T-1).
 
 % TODO: computing absolute distance to nearest hole, instead of this?
-nearHole(L) :- position(L), hole(L+1).
-nearHole(L) :- position(L), hole(L+length).
-nearHole(L) :- position(L), hole(L-1).
-nearHole(L) :- position(L), hole(L-length).
+nearThreeHoles(L) :- position(L), hole(L-1), hole(L+length), hole(L-length).
+nearThreeHoles(L) :- position(L), hole(L+1), hole(L-1), hole(L+length).
+nearThreeHoles(L) :- position(L), hole(L+1), hole(L-1), hole(L-length).
+nearThreeHoles(L) :- position(L), hole(L+1), hole(L+length), hole(L-length).
+partialReward(-45, T) :- tic(currentPosition(L), T), nearThreeHoles(L), time(T).
+
+nearTwoHoles(L) :- position(L), hole(L+1), hole(L-1), not nearThreeHoles(L).
+nearTwoHoles(L) :- position(L), hole(L+1), hole(L+length), not nearThreeHoles(L).
+nearTwoHoles(L) :- position(L), hole(L+1), hole(L-length), not nearThreeHoles(L).
+nearTwoHoles(L) :- position(L), hole(L-1), hole(L+length), not nearThreeHoles(L).
+nearTwoHoles(L) :- position(L), hole(L-1), hole(L-length), not nearThreeHoles(L).
+nearTwoHoles(L) :- position(L), hole(L+length), hole(L-length), not nearThreeHoles(L).
+partialReward(-30, T) :- tic(currentPosition(L), T), nearTwoHoles(L), time(T).
+
+nearHole(L) :- position(L), hole(L+1), not nearTwoHoles(L).
+nearHole(L) :- position(L), hole(L+length), not nearTwoHoles(L).
+nearHole(L) :- position(L), hole(L-1), not nearTwoHoles(L).
+nearHole(L) :- position(L), hole(L-length), not nearTwoHoles(L).
 partialReward(-15, T) :- tic(currentPosition(L), T), nearHole(L), time(T).
 
 
